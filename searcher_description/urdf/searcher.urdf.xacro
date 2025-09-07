@@ -1,0 +1,211 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="searcher">
+
+    <xacro:arg name="is_sim" default="false"/>
+
+    <!-- Include ros2_control Plugins -->
+    <xacro:include filename="$(find searcher_description)/urdf/searcher_ros2_control.xacro" />
+    
+    <!-- Useful XACRO Variables (Properties) -->
+    <xacro:property name="PI" value="3.14159265359" />
+    <xacro:property name="effort" value="30.0" />
+    <xacro:property name="velocity" value="10.0" />
+
+    <!-- Useful Macros -->
+    <xacro:macro name="default_inertial" params="mass">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="${mass}" />
+            <inertia ixx="1.0" ixy="0.0" ixz="0.0"
+                     iyy="1.0" iyz="0.0"
+                     izz="1.0" />
+        </inertial>
+    </xacro:macro>
+
+
+    <!-- Links -->
+    <link name="world"/>
+
+    <link name="Shoulder_Base">
+        <xacro:default_inertial mass="1.000"/>
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="package://searcher_description/meshes/Shoulder_Base.stl" scale="0.001 0.001 0.001"/>
+            </geometry>
+        </visual>
+        <collision>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="package://searcher_description/meshes/Shoulder_Base.stl" scale="0.001 0.001 0.001"/>
+            </geometry>
+        </collision>
+    </link>
+  
+    <link name="Shoulder_Rotating">
+        <xacro:default_inertial mass="1.000"/>
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="package://searcher_description/meshes/Shoulder_Rotating.stl" scale="0.001 0.001 0.001"/>
+            </geometry>
+        </visual>
+        <collision>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="package://searcher_description/meshes/Shoulder_Rotating.stl" scale="0.001 0.001 0.001"/>
+            </geometry>
+        </collision>
+    </link>  
+
+    <link name="Upper_Arm">
+        <xacro:default_inertial mass="1.000"/>
+        <visual>
+            <origin rpy="0 0 1.5707" xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="package://searcher_description/meshes/Upper_Arm.stl" scale="0.001 0.001 0.001"/>
+            </geometry>
+        </visual>
+        <collision>
+            <origin rpy="0 0 1.5707" xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="package://searcher_description/meshes/Upper_Arm.stl" scale="0.001 0.001 0.001"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <link name="Lower_Arm">
+        <xacro:default_inertial mass="1.000"/>
+        <visual>
+            <origin rpy="0 0 1.5707" xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="package://searcher_description/meshes/Lower_Arm.stl" scale="0.001 0.001 0.001"/>
+            </geometry>
+        </visual>
+        <collision>
+            <origin rpy="0 0 1.5707" xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="package://searcher_description/meshes/Lower_Arm.stl" scale="0.001 0.001 0.001"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <link name="Wrist">
+        <xacro:default_inertial mass="1.000"/>
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="package://searcher_description/meshes/Wrist.stl" scale="0.001 0.001 0.001"/>
+            </geometry>
+        </visual>
+        <collision>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="package://searcher_description/meshes/Wrist.stl" scale="0.001 0.001 0.001"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <link name="End_Effector">
+        <xacro:default_inertial mass="1.000"/>
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <box size="0.001 0.001 0.001" scale="0.001 0.001 0.001"/>
+            </geometry>
+        </visual>
+        <collision>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <box size="0.001 0.001 0.001" scale="0.001 0.001 0.001"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <!-- Joints -->  
+    <joint name="Virtual_Joint" type="fixed">
+        <parent link="world"/>
+        <child link="Shoulder_Base"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint> 
+
+    <joint name ="Shoulder" type="revolute">
+        <parent link="Shoulder_Base"/>
+        <child link = "Shoulder_Rotating"/>
+        <origin xyz="0 0 0.018175"/>
+        <axis xyz="0 0 1"/>
+        <limit lower="0.0" upper="3.14159" effort="30.0" velocity="10.0"/>
+        <dynamics damping="0.7" friction="1.0"/>
+    </joint>
+
+    <joint name ="Shoulder_Upper_Arm" type="revolute">
+        <parent link="Shoulder_Rotating"/>
+        <child link = "Upper_Arm"/>
+        <origin xyz="0.00526 0.000005 0.023208"/>
+        <axis xyz="1 0 0"/>
+        <limit lower="0.0" upper="3.14159" effort="30.0" velocity="10.0"/>
+        <dynamics damping="0.7" friction="1.0"/>
+    </joint>
+
+    <joint name ="Upper_Lower_Arm" type="revolute">
+        <parent link="Upper_Arm"/>
+        <child link = "Lower_Arm"/>
+        <origin xyz="-0.0078168 0 0.05982"/>
+        <axis xyz="1 0 0"/>
+        <limit lower="0.0" upper="3.14159" effort="30.0" velocity="10.0"/>
+        <dynamics damping="0.7" friction="1.0"/>
+    </joint>
+
+    <joint name ="Lower_Arm_Wrist" type="revolute">
+        <parent link="Lower_Arm"/>
+        <child link = "Wrist"/>
+        <origin xyz="-0.007185 0 0.071339"/>
+        <axis xyz="1 0 0"/>
+        <limit lower="0.0" upper="3.14159" effort="30.0" velocity="10.0"/>
+        <dynamics damping="0.7" friction="1.0"/>
+    </joint>
+
+    <joint name ="Wrist_End_Effector" type="fixed">
+        <parent link="Wrist"/>
+        <child link = "End_Effector"/>
+        <origin xyz="0.041754 0.040712 -0.000361"/>
+    </joint>
+
+    <!--transmissions-->
+
+    <transmission name="shoulder_transmission">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="Shoulder">
+            <hardwareInterface>position</hardwareInterface>
+        </joint>
+    </transmission>
+
+    <transmission name="shoulder_upper_arm_transmission">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="Shoulder_Upper_Arm">
+            <hardwareInterface>position</hardwareInterface>
+        </joint>
+    </transmission>
+
+    <transmission name="upper_lower_arm_transmission">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="Upper_Lower_Arm">
+            <hardwareInterface>position</hardwareInterface>
+        </joint>
+    </transmission>
+
+    <transmission name="lower_arm_wrist_transmission">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="Lower_Arm_Wrist">
+            <hardwareInterface>position</hardwareInterface>
+        </joint>
+    </transmission>
+
+    <transmission name="end_effector_transmission">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="Wrist_End_Effector">
+            <hardwareInterface>position</hardwareInterface>
+        </joint>
+    </transmission>
+
+</robot>

@@ -1,0 +1,9 @@
+<library path="searcher_ros2_hardware">
+  <class name="searcher_ros2_hardware/SearcherSystemHardware"
+         type="searcher_ros2_hardware::SearcherSystemHardware"
+         base_class_type="hardware_interface::SystemInterface">
+    <description>
+      Custom hardware to control the servo Searcher joints.
+    </description>
+  </class>
+</library>

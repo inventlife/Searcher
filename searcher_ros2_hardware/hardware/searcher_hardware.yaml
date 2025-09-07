@@ -1,0 +1,20 @@
+controller_manager:
+  ros__parameters:
+    hardware_interface_plugins:
+      - searcher_ros2_hardware/SearcherSystemHardware
+
+    searcher_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+      joints:
+        - Shoulder
+        - Shoulder_Upper_Arm
+        - Upper_Lower_Arm
+        - Lower_Arm_Wrist
+      command_interfaces:
+        - position
+      state_interfaces:
+        - position
+      parameters:
+        open_loop_control: false
+        allow_nonzero_velocity_at_trajectory_end: false
+        publish_rate: 50.0

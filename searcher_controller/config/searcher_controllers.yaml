@@ -1,0 +1,37 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 10
+
+    searcher_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+searcher_controller:
+  ros__parameters:
+    joints:
+      - Shoulder
+      - Shoulder_Upper_Arm
+      - Upper_Lower_Arm
+      - Lower_Arm_Wrist
+
+    command_interfaces:
+      - position
+
+    state_interfaces:
+      - position
+
+    open_loop_control: false
+    allow_integration_in_goal_trajectories: true
+    allow_nonzero_velocity_at_trajectory_end: true
+    publish_rate: 50.0
+
+    constraints:
+      goal_time: 2.0
+      stopped_velocity_tolerance: 0.01
+      Shoulder:
+        goal: 0.01
+      Shoulder_Upper_Arm:
+        goal: 0.01
+      Upper_Lower_Arm:
+        goal: 0.01
+      Lower_Arm_Wrist:
+        goal: 0.01

@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="searcher">
+
+    <ros2_control name="SearcherSystem" type="system">
+
+        <xacro:property name="PI" value="3.14159265359" />
+
+        <hardware>
+            <plugin>searcher_ros2_hardware/SearcherSystemHardware</plugin>
+        </hardware>
+
+
+        <joint name="Shoulder">
+            <command_interface name="position">
+                <param name="min">0.0</param>
+                <param name="max">3.14159</param>
+            </command_interface>
+            <state_interface name="position"/>
+        </joint>
+
+        <joint name="Shoulder_Upper_Arm">
+            <command_interface name="position">
+                <param name="min">0.0</param>
+                <param name="max">3.14159</param>
+            </command_interface>
+            <state_interface name="position"/>
+        </joint>
+
+        <joint name="Upper_Lower_Arm">
+            <command_interface name="position">
+                <param name="min">0.0</param>
+                <param name="max">3.14159</param>
+            </command_interface>
+            <state_interface name="position"/>
+        </joint>
+
+        <joint name="Lower_Arm_Wrist">
+            <command_interface name="position">
+                <param name="min">0.0</param>
+                <param name="max">3.14159</param>
+            </command_interface>
+            <state_interface name="position"/>
+        </joint>
+        
+    </ros2_control>
+
+</robot>

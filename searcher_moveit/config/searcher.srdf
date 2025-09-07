@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<robot name="searcher">
+    <group name="arm">
+        <joint name="Virtual_Joint"/> 
+        <joint name="Shoulder"/>
+        <joint name="Shoulder_Upper_Arm"/>
+        <joint name="Upper_Lower_Arm"/>
+        <joint name="Lower_Arm_Wrist"/>
+    </group>
+
+    <group_state name="home" group="arm">
+        <joint name="Shoulder" value="0"/>
+        <joint name="Shoulder_Upper_Arm" value="0"/>
+        <joint name="Upper_Lower_Arm" value="0"/>
+        <joint name="Lower_Arm_Wrist" value="0"/>
+    </group_state>
+
+    <end_effector name="End_Effector" parent_link="Wrist" group="arm" />
+
+    <disable_collisions link1="Shoulder_Base" link2="world" reason="Adjacent"/>    
+    <disable_collisions link1="Shoulder_Base" link2="Shoulder_Rotating" reason="Adjacent"/>
+    <disable_collisions link1="Shoulder_Rotating" link2="Upper_Arm" reason="Adjacent"/>
+    <disable_collisions link1="Upper_Arm" link2="Lower_Arm" reason="Adjacent"/>
+    <disable_collisions link1="Lower_Arm" link2="Wrist" reason="Adjacent"/>
+    <disable_collisions link1="Wrist" link2="End_Effector" reason="Adjacent"/>
+</robot>
